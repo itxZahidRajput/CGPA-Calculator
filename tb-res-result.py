@@ -1,18 +1,24 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+from flask import Flask, request, jsonify
 import time
+
+app = Flask(__name__)
+
+@app.route('/process_ag_number', methods=['POST'])
+def process_ag_number():
+    ag_number = request.json.get('agNumber')
+    
+    result_content = get_result_with_selenium_and_save(ag_number)
+
+    return result_content
 
 def get_result_with_selenium_and_save(registration_number):
     url = "http://lms.uaf.edu.pk/login/index.php"  # Replace with your actual URL
 
-    # Set up Chrome options for headless mode
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-
-    # Initialize the Chrome driver with headless options
-    driver = webdriver.Chrome(options=chrome_options)
+    # Initialize the Chrome driver
+    driver = webdriver.Chrome()
 
     try:
         # Open the form page
@@ -94,12 +100,6 @@ def get_result_with_selenium_and_save(registration_number):
             semester_html = f"{semester_heading}<section class=\"table__body\"><table class=\"table tab-content\"><tr>{result_table_html.split('<tr>')[1]}{''.join(rows)}</tr></table></section>"
             all_semesters_html += semester_html
 
-        # Save the combined result to a single HTML file
-        filename = f"{registration_number}_all_semesters.html"
-        with open(filename, "w", encoding="utf-8") as file:
-            file.write(head_html + all_semesters_html + "</main></body></html>")
-        print(f"All semesters result saved to {filename}")
-
         # Wait for a few seconds before closing the browser
         time.sleep(5)
 
@@ -107,6 +107,7 @@ def get_result_with_selenium_and_save(registration_number):
         # Close the browser window
         driver.quit()
 
+    return head_html + all_semesters_html + "</main></body></html>"
+
 if __name__ == "__main__":
-    registration_number = input("Enter your Registration Number (****-ag-****): ")
-    get_result_with_selenium_and_save(registration_number)
+    app.run(port=5000)  # Adjust the port as needed

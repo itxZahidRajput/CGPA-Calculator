@@ -1,56 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>UAF CGPA Calculator</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>AG Number Form</title>
 </head>
-
 <body>
-    <main class="table" id="customers_table">
-        <section class="table__header">
+    <form id="agForm">
+        <label for="agNumber">Enter AG Number:</label>
+        <input type="text" id="agNumber" name="agNumber" required>
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
 
-            <h1><span style="color: rgb(205, 35, 171);">Registration#</span> <span style="color: rgb(15, 72, 158);">2022-ag-7705</span></h1>
-            <h1><span style="color: rgb(205, 35, 171);">Name:</span> <span style="color: rgb(15, 72, 158);">Muhammad Zahid Latif</span></h1>
+    <div id="resultContainer"></div>
 
-            <div class="export__file">
-                <button>Download PDF</button>
-                </div>
-            </div>
-        </section>
-        <section class="table__body">
-            <table>
-                <thead>
-                    <tr>
-                        
-                        <th>Sr</th>
-                        <th>Semester</th>
-                        <th>Teacher Name</th>
-                        <th>Course Code</th>
-                        <th>Course Title</th>
-                        <th>Credit Hours</th>
-                        <th>Mid</th>
-                        <th>Assignment</th>
-                        <th>Final</th>
-                        <th>Practical</th>
-                        <th>Total</th>
-                        <th>Grade</th>
+    <script>
+        function submitForm() {
+            var agNumber = document.getElementById("agNumber").value;
 
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    
-                </tbody>
-            </table>
-        </section>
-    </main>
-    
-
+            // Perform AJAX request to send AG number to the server
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://cgpa-calculator-4vgj.onrender.com");  // Replace with your Render app endpoint
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var resultContainer = document.getElementById("resultContainer");
+                    resultContainer.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send(JSON.stringify({ agNumber: agNumber }));
+        }
+    </script>
 </body>
-
 </html>
