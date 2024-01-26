@@ -9,12 +9,17 @@
     <form id="agForm">
         <label for="agNumber">Enter AG Number:</label>
         <input type="text" id="agNumber" name="agNumber" required>
-        <button type="button" onclick="submitForm()">Submit</button>
+        <button type="submit">Submit</button>
     </form>
 
     <div id="resultContainer"></div>
 
     <script>
+        document.getElementById("agForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            submitForm();
+        });
+
         function submitForm() {
             var agNumber = document.getElementById("agNumber").value;
 
