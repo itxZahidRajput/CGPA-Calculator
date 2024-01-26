@@ -25,7 +25,7 @@
 
             // Perform AJAX request to send AG number to the server
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://cgpa-calculator-4vgj.onrender.com");  // Replace with your Render app endpoint
+            xhr.open("POST", "https://cgpa-calculator-4vgj.onrender.com/process_ag_number");  // Replace with your Render app endpoint
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
